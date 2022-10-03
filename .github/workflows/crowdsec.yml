@@ -42,7 +42,7 @@ jobs:
           sudo systemctl reload crowdsec        
       - name: Get crowdsec decisions
         run: |
-          sudo cscli decisions list --origin CAPI > crowdsec.txt              
+          sudo cscli alerts list --type ban > crowdsec.txt              
           
       # Commit and push
       - name: Commit files
