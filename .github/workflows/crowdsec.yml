@@ -26,13 +26,23 @@ jobs:
       - uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
-      - name: Get crowdsec blacklist (2)
+      - name: Setup crowdsec repository
         run: |
           curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
-          apt install crowdsec -y
-          apt install crowdsec-firewall-bouncer-iptables -y
-          systemctl reload crowdsec
-          sudo cscli decisions list --origin CAPI > crowdsec.txt
+      # Runs a single command using the runners shell
+      - name: Install crowdsec
+        run: |
+          sudo apt install crowdsec -y
+      # Runs a single command using the runners shell
+      - name: Install crowdsec firewall bouncer
+        run: |
+          sudo apt install crowdsec-firewall-bouncer-iptables -y
+      - name: Reload crowdsec configuration
+        run: |
+          sudo systemctl reload crowdsec        
+      - name: Get crowdsec decisions
+        run: |
+          sudo cscli decisions list --origin CAPI > crowdsec.txt              
           
       # Commit and push
       - name: Commit files
